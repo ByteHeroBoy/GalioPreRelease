@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using ETL.Security;
+using System;
+using System.Configuration;
 using System.Data.SQLite;
 namespace DAL
 {
@@ -23,5 +25,35 @@ namespace DAL
             return new SQLiteConnection(StringConect);
         }
         #endregion
+
+        #region Security
+        public Users Login (Users data)
+        {
+            Users usr = new Users();
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "select a.UserID, a.UserName, a.UserPass, a.Estado from UsersR where a.UserName = @UserName and a.UserPass = @UserPass and a.Estado = 1";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                {
+                    cmd.Parameters.AddWithValue("@UserName", data.UserName);
+                    cmd.Parameters.AddWithValue("@UserPass", data.UserPass);
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            usr.UserID = Convert.ToInt32(reader["UserID"].ToString());
+                            usr.UserName = reader["UserName"].ToString();
+                        }
+                    }
+                   
+                }
+                cnt.Close();
+            }
+                return usr;
+        }
+        #endregion
     }
 }
+ 

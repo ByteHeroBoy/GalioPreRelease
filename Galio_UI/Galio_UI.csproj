@@ -70,14 +70,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\LoginModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Security\LoginModule.Designer.cs">
+      <DependentUpon>LoginModule.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -87,6 +87,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Security\LoginModule.resx">
+      <DependentUpon>LoginModule.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="GalioDB.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -110,6 +116,38 @@
       <Project>{4d393c76-e372-4c1e-b4f8-94f390d1401a}</Project>
       <Name>ETL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataGestor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Add.png" />
+    <Content Include="Resources\Clean.png" />
+    <Content Include="Resources\CleanData.jpeg" />
+    <Content Include="Resources\Close.jpeg" />
+    <Content Include="Resources\CloseX.jpeg" />
+    <Content Include="Resources\consultar.png" />
+    <Content Include="Resources\Delete.png" />
+    <Content Include="Resources\Deleteimg.png" />
+    <Content Include="Resources\EditStudents.jpeg" />
+    <Content Include="Resources\Escudo.jpg" />
+    <Content Include="Resources\exportar.png" />
+    <Content Include="Resources\InformePDF.jpeg" />
+    <Content Include="Resources\Justify1.jpeg" />
+    <Content Include="Resources\LockModule.jpeg" />
+    <Content Include="Resources\LogIn.png" />
+    <Content Include="Resources\LogOut.png" />
+    <Content Include="Resources\PDFTodos.jpeg" />
+    <Content Include="Resources\Picture1.png" />
+    <Content Include="Resources\Picture2.png" />
+    <Content Include="Resources\Picture3.png" />
+    <Content Include="Resources\Restart.jpeg" />
+    <Content Include="Resources\S1.png" />
+    <Content Include="Resources\S2.png" />
+    <Content Include="Resources\S3.jpg" />
+    <Content Include="Resources\Save.jpeg" />
+    <Content Include="Resources\Schedule.jpeg" />
+    <Content Include="Resources\Stattistics.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
