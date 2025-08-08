@@ -1,4 +1,5 @@
 ﻿using DAL;
+using ETL.DataGen;
 using ETL.Security;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,14 @@ namespace BLL
                 return false;
         }
         #endregion
-        #region 
-
+        #region DataGestor
+        public List<Estudiante> ListGroup(String Group)
+        {
+            List<Estudiante> lst = new List<Estudiante>();
+            AccessData dt = new AccessData();
+            lst = dt.ListGroup(Group);
+            return lst;
+        }
         #endregion
     }
 }

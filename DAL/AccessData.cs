@@ -1,5 +1,7 @@
-﻿using ETL.Security;
+﻿using ETL.DataGen;
+using ETL.Security;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SQLite;
 namespace DAL
@@ -52,6 +54,36 @@ namespace DAL
                 cnt.Close();
             }
                 return usr;
+        }
+        #endregion
+        #region DataGestor
+        public List<Estudiante> ListGroup(string Group)
+        {
+            List<Estudiante> lst = new List<Estudiante>();
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "select Cedula, Nombre, Grade from Estudiante  where Grupo = @Grupo";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                {
+                    cmd.Parameters.AddWithValue("@Grupo", Group);
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lst.Add(new Estudiante
+                            {
+                                Cedula = reader["Cedula"].ToString(),
+                                Nombre = reader["Nombre"].ToString(),
+                                Grupo = reader["Grupo"].ToString()
+                            });
+                        }
+                    }
+                }
+                cnt.Close();
+            }
+            return lst;
         }
         #endregion
     }

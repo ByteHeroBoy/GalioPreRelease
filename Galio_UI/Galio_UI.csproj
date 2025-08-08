@@ -108,6 +108,9 @@
     <Compile Include="Security\LoginModule.Designer.cs">
       <DependentUpon>LoginModule.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DataGestor\Attendence.resx">
+      <DependentUpon>Attendence.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataGestor\ContainerData.resx">
       <DependentUpon>ContainerData.cs</DependentUpon>
     </EmbeddedResource>
