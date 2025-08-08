@@ -1,5 +1,6 @@
 ﻿using BLL;
 using ETL.Security;
+using Galio_UI.DataGestor;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,7 +32,9 @@ namespace Galio_UI.Security
                 Logic lg = new Logic();
                 if (lg.Login(usr))
                 {
-                    //redireccionar a los datos
+                    ContainerData cnt = new ContainerData();
+                    cnt.Show();
+                    Hide();
 
                 }else
                     MessageBox.Show("Error!!, Credenciales Incorrectas.", "Error!!", MessageBoxButtons.OK, MessageBoxIcon.Error);

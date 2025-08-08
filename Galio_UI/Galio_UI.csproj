@@ -70,6 +70,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataGestor\Attendence.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataGestor\Attendence.Designer.cs">
+      <DependentUpon>Attendence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataGestor\ContainerData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataGestor\ContainerData.Designer.cs">
+      <DependentUpon>ContainerData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataGestor\ControlAttendence.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataGestor\ControlAttendence.Designer.cs">
+      <DependentUpon>ControlAttendence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataGestor\NewStudent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataGestor\NewStudent.Designer.cs">
+      <DependentUpon>NewStudent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataGestor\Statistics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataGestor\Statistics.Designer.cs">
+      <DependentUpon>Statistics.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\LoginModule.cs">
@@ -78,6 +108,9 @@
     <Compile Include="Security\LoginModule.Designer.cs">
       <DependentUpon>LoginModule.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DataGestor\ContainerData.resx">
+      <DependentUpon>ContainerData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -117,9 +150,7 @@
       <Name>ETL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataGestor\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\Add.png" />
     <Content Include="Resources\Clean.png" />

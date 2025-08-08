@@ -33,7 +33,7 @@ namespace DAL
             using (SQLiteConnection cnt = CreateConnection())
             {
                 cnt.Open();
-                string pa = "select a.UserID, a.UserName, a.UserPass, a.Estado from UsersR where a.UserName = @UserName and a.UserPass = @UserPass and a.Estado = 1";
+                string pa = "select UserID, UserName, UserPass, Estado from UsersR where UserName = @UserName and UserPass = @UserPass and Estado = 1";
                 using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
                 {
                     cmd.Parameters.AddWithValue("@UserName", data.UserName);
