@@ -63,7 +63,7 @@ namespace DAL
             using (SQLiteConnection cnt = CreateConnection())
             {
                 cnt.Open();
-                string pa = "select Cedula, Nombre, Grade from Estudiante  where Grupo = @Grupo";
+                string pa = "select Cedula, Nombre, Grupo from Estudiante  where Grupo = @Grupo";
                 using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
                 {
                     cmd.Parameters.AddWithValue("@Grupo", Group);

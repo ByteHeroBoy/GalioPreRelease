@@ -190,6 +190,7 @@ namespace Galio_UI.DataGestor
             this.dgvList.Name = "dgvList";
             this.dgvList.Size = new System.Drawing.Size(534, 229);
             this.dgvList.TabIndex = 30;
+            this.dgvList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellContentClick);
             // 
             // label2
             // 
