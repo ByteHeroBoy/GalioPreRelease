@@ -14,30 +14,47 @@ namespace Galio_UI.DataGestor
 {
     public partial class Attendence : Form
     {
+        //Lista para buscar en txtbusca global
+        private List<Estudiante> data { get; set; }
         public Attendence()
         {
             InitializeComponent();
             CMB();
             Start();
+            dgvList.Columns[0].DisplayIndex = 3; // La columna de index 0 pasa a la posición 3
+            dgvList.Columns[1].DisplayIndex = 2; // La columna de index 1 pasa a la posición 2
+            rbID.Checked = true;
         }
 
         private void Start()
         {
-            //mala practica
-            ListGroup(cmbGrupo.SelectedItem.ToString());
-        }
-
-        private void ListGroup(string Group)
-        {
-            //mejor select del cmb al inicio
             Logic logic = new Logic();
-            List<Estudiante> est = logic.ListGroup(Group);
+            List<Estudiante> est = logic.ListGroup(cmbGrupo.SelectedItem.ToString());
             dgvList.DataSource = est;
+            data = est;
             dgvList.Refresh();
-            //AutoSize For Name Column Adjust to size Name
-            dgvList.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvList.DataBindingComplete += DgvList_DataBindingComplete;
             //Hide Group Column
             dgvList.Columns["Grupo"].Visible = false;
+            //AutoSize For Name Column Adjust to size Name
+            dgvList.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;       
+            foreach (DataGridViewColumn item in dgvList.Columns)
+            {               
+                if (item.Index !=  0 && item.Index != 1)
+                 {
+                     item.ReadOnly = true;
+                 }      
+            }
+        }  
+        private void DgvList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvList.Rows)
+            {
+                if (row.Cells["Asistencia"] is DataGridViewCell cell)
+                {
+                    cell.Value = "Presente";
+                }
+            }
         }
         #region Private
         private void CMB()
@@ -68,28 +85,137 @@ namespace Galio_UI.DataGestor
                 Name = "Descripcion"
             };
             dgvList.Columns.Add(descript);
-
-            //
-            foreach (DataGridViewColumn item in dgvList.Columns)
-            {
-                if (item.Index != 3)
-                {
-                    item.ReadOnly = true;
-                }
-            }
-            dgvList.Columns["Descripcion"].ReadOnly = false;
         }
         #endregion
 
-        private void dgvList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void cmbGrupo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in dgvList.Rows)
-            {
-                if (row.Cells["Asistencia"] is DataGridViewCell cell)
-                {
-                    cell.Value = "Presente";
-                }
+            Start();
+        }
 
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("¿Seguro que desea Cerra la Asistencia?\n Si ha realizado modificaciones se perderan.", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+                Close();
+        }
+
+        private void ResetAttendence_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Seguro que desea Reiniciar la asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+                Start();
+        }
+
+        private void SaveAttendence_Click(object sender, EventArgs e)
+        {
+            //seleccionar la clase que se esta pasando lista
+            List<Asistencia> save = new List<Asistencia>();
+            string classt = "";
+            using ( CustomMessageBox cmb1 = new CustomMessageBox())
+            {
+                if (cmb1.ShowDialog() == DialogResult.OK)
+                {
+                    classt = cmb1.SelectedOption;
+                }
+            }
+            //guardar la lista de asistencia\
+            foreach (DataGridViewRow fila in dgvList.Rows)
+            {
+                if (!fila.IsNewRow)
+                {
+                    var descripcionCell = fila.Cells["Descripcion"].Value;
+                    string descripcion = string.Empty;
+
+                    if (descripcionCell == null || string.IsNullOrEmpty(descripcionCell.ToString()))
+                    {
+                        // Asignar un valor por defecto si la celda está vacía o es nula
+                        descripcion = "No hay observaciones";
+                        fila.Cells["Descripcion"].Value = descripcion;
+                    }
+                    else
+                    {
+                        // Usar el valor actual si no está vacío
+                        descripcion = descripcionCell.ToString();
+                    }
+                   Asistencia Add = new Asistencia
+                    {
+                        Cedula = fila.Cells["Cedula"].Value.ToString(),
+
+                    };
+                }
+            }
+        }
+
+        private void txtBusca_TextChanged(object sender, EventArgs e)
+        {
+            if (rbID.Checked == true)
+                if (txtBusca.Text.Trim().Length > 0)
+                    dgvList.DataSource = data.FindAll(item => item.Cedula.ToString().Contains(txtBusca.Text.Trim()));
+            if (rbName.Checked == true)
+                if (txtBusca.Text.Trim().Length > 0)
+                    dgvList.DataSource = data.FindAll(item => item.Nombre.ToString().ToUpper().Contains(txtBusca.Text.ToUpper().Trim()));
+        }
+
+        private void txtBusca_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            /// <summary>
+            /// Code from : https://ourcodeworld.com/articles/read/507/how-to-allow-only-numbers-inside-a-textbox-in-winforms-c-sharp
+            /// <summary>
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (rbID.Checked == true)
+            {
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+                {
+                    e.Handled = true;
+                    //Some Error Message ??
+                }
+            }
+            /*
+               // If you want, you can allow decimal (float) numbers
+               if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+               {
+                   e.Handled = true;
+               }
+             */
+            /// <summary>
+            /// Code from : https://stackoverflow.com/questions/8321871/how-to-make-a-textbox-accept-only-alphabetic-characters
+            /// User: https://stackoverflow.com/users/570150/v4vendetta
+            /// <summary>
+            // Verify that the pressed key isn't CTRL or any nuemric Digit
+            if (rbName.Checked == true)
+            {
+                e.Handled = !(char.IsLetter(e.KeyChar) || e.KeyChar == (char)Keys.Back || e.KeyChar == (char)Keys.Space);
+            }
+        }
+
+
+        public class CustomMessageBox : Form
+        {
+            public string SelectedOption { get; private set; }
+
+            public CustomMessageBox()
+            {
+                this.Text = "Seleccione una opción";
+                this.Size = new System.Drawing.Size(500, 150);
+
+                // Crear los botones
+                Button option1 = new Button() { Text = "Matematica", Location = new System.Drawing.Point(30, 30) };
+                Button option2 = new Button() { Text = "Act.Desarrollo", Location = new System.Drawing.Point(150, 30) };
+                Button option3 = new Button() { Text = "Taller", Location = new System.Drawing.Point(270, 30) };
+                Button option4 = new Button() { Text = "Guia", Location = new System.Drawing.Point(390, 30) };
+
+                // Agregar los botones al formulario
+                this.Controls.Add(option1);
+                this.Controls.Add(option2);
+                this.Controls.Add(option3);
+                this.Controls.Add(option4);
+
+                // Agregar manejadores de eventos a los botones
+                option1.Click += (sender, e) => { SelectedOption = option1.Text; this.DialogResult = DialogResult.OK; this.Close(); };
+                option2.Click += (sender, e) => { SelectedOption = option2.Text; this.DialogResult = DialogResult.OK; this.Close(); };
+                option3.Click += (sender, e) => { SelectedOption = option3.Text; this.DialogResult = DialogResult.OK; this.Close(); };
+                option4.Click += (sender, e) => { SelectedOption = option4.Text; this.DialogResult = DialogResult.OK; this.Close(); };
             }
         }
     }

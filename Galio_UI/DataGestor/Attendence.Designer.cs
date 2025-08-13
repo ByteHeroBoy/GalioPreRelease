@@ -84,6 +84,7 @@ namespace Galio_UI.DataGestor
             this.btnClose.Size = new System.Drawing.Size(41, 32);
             this.btnClose.TabIndex = 6;
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // lblClass
             // 
@@ -151,6 +152,7 @@ namespace Galio_UI.DataGestor
             this.ResetAttendence.Size = new System.Drawing.Size(71, 60);
             this.ResetAttendence.TabIndex = 32;
             this.ResetAttendence.UseVisualStyleBackColor = true;
+            this.ResetAttendence.Click += new System.EventHandler(this.ResetAttendence_Click);
             // 
             // SaveAttendence
             // 
@@ -162,6 +164,7 @@ namespace Galio_UI.DataGestor
             this.SaveAttendence.Size = new System.Drawing.Size(66, 61);
             this.SaveAttendence.TabIndex = 31;
             this.SaveAttendence.UseVisualStyleBackColor = true;
+            this.SaveAttendence.Click += new System.EventHandler(this.SaveAttendence_Click);
             // 
             // label1
             // 
@@ -178,6 +181,8 @@ namespace Galio_UI.DataGestor
             this.txtBusca.Name = "txtBusca";
             this.txtBusca.Size = new System.Drawing.Size(220, 20);
             this.txtBusca.TabIndex = 28;
+            this.txtBusca.TextChanged += new System.EventHandler(this.txtBusca_TextChanged);
+            this.txtBusca.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBusca_KeyPress);
             // 
             // dgvList
             // 
@@ -190,7 +195,6 @@ namespace Galio_UI.DataGestor
             this.dgvList.Name = "dgvList";
             this.dgvList.Size = new System.Drawing.Size(534, 229);
             this.dgvList.TabIndex = 30;
-            this.dgvList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellContentClick);
             // 
             // label2
             // 
@@ -208,6 +212,7 @@ namespace Galio_UI.DataGestor
             this.cmbGrupo.Name = "cmbGrupo";
             this.cmbGrupo.Size = new System.Drawing.Size(64, 21);
             this.cmbGrupo.TabIndex = 26;
+            this.cmbGrupo.SelectedIndexChanged += new System.EventHandler(this.cmbGrupo_SelectedIndexChanged);
             // 
             // Attendence
             // 

@@ -8,7 +8,7 @@ namespace ETL.DataGen
 {
     public class Asistencia
     {
-        public int ID_Asist { get; set; }
+        public int ID_Asist { get; set; }//Auto Increment on DB
         public string Cedula { get; set; }
         public string Materia { get; set; }
         public int  Lecciones { get; set; }
