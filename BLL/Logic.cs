@@ -30,6 +30,11 @@ namespace BLL
             lst = dt.ListGroup(Group);
             return lst;
         }
+        public bool SaveAttendence(List<Asistencia>lst, string grupo)
+        {
+            AccessData dt = new AccessData();
+            return dt.SaveAttendence(grupo, lst);
+        }
         #endregion
     }
 }

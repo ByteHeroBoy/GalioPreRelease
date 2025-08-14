@@ -12,7 +12,7 @@ namespace ETL.DataGen
         public string Cedula { get; set; }
         public string Materia { get; set; }
         public int  Lecciones { get; set; }
-        public DateTime  FechaHora { get; set; }
+        public string  FechaHora { get; set; }
         public string Estado { get; set; }
         public string Observaciones { get; set; }
         public Asistencia()
@@ -21,7 +21,7 @@ namespace ETL.DataGen
             Cedula = string.Empty;
             Materia = string.Empty;
             Lecciones = int.MinValue;
-            FechaHora = DateTime.Now;
+            FechaHora = string.Empty;
             Estado = string.Empty;
             Observaciones = string.Empty;
         }

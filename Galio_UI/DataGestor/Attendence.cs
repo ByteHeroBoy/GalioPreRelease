@@ -81,10 +81,16 @@ namespace Galio_UI.DataGestor
 
             DataGridViewTextBoxColumn descript = new DataGridViewTextBoxColumn
             {
-                HeaderText = "Descripcion",
-                Name = "Descripcion"
+                HeaderText = "Observaciones",
+                Name = "Observaciones"
             };
             dgvList.Columns.Add(descript);
+
+            for (int i = 0; i <8; i++)
+            {
+                cmbLect.Items.Add(i);
+            }
+            cmbLect.SelectedIndex = 0;
         }
         #endregion
 
@@ -109,41 +115,63 @@ namespace Galio_UI.DataGestor
 
         private void SaveAttendence_Click(object sender, EventArgs e)
         {
-            //seleccionar la clase que se esta pasando lista
-            List<Asistencia> save = new List<Asistencia>();
-            string classt = "";
-            using ( CustomMessageBox cmb1 = new CustomMessageBox())
+            if ((int)cmbLect.SelectedItem != 0)
             {
-                if (cmb1.ShowDialog() == DialogResult.OK)
+                List<Asistencia> save = new List<Asistencia>();
+                string classt = "";
+                using (CustomMessageBox cmb1 = new CustomMessageBox())
                 {
-                    classt = cmb1.SelectedOption;
+                    if (cmb1.ShowDialog() == DialogResult.OK)
+                    {
+                        classt = cmb1.SelectedOption;
+                    }
+                }
+                //guardar la lista de asistencia\
+                foreach (DataGridViewRow fila in dgvList.Rows)
+                {
+                    if (!fila.IsNewRow)
+                    {
+                        var descripcionCell = fila.Cells["Observaciones"].Value;
+                        string descripcion = string.Empty;
+
+                        if (descripcionCell == null || string.IsNullOrEmpty(descripcionCell.ToString()))
+                        {
+                            // Asignar un valor por defecto si la celda está vacía o es nula
+                            descripcion = "No hay observaciones";
+                            fila.Cells["Observaciones"].Value = descripcion;
+                        }
+                        else
+                        {
+                            // Usar el valor actual si no está vacío
+                            descripcion = descripcionCell.ToString();
+                        }
+                        Asistencia Ast = new Asistencia
+                        {
+                            Cedula = fila.Cells["Cedula"].Value.ToString(),
+                            FechaHora = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                            Estado = fila.Cells["Asistencia"].Value.ToString(),
+                            Observaciones = descripcion,
+                            Materia = classt,
+                            Lecciones = Convert.ToInt32(cmbLect.SelectedItem.ToString())
+                        };
+                        save.Add(Ast);
+                    }
+                }
+                Logic logic = new Logic();
+                string cmbG = cmbGrupo.SelectedItem.ToString();
+                if (logic.SaveAttendence(save, cmbG))
+                {
+                    MessageBox.Show("¡Los datos de asistencia se guardaron correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Start();
+                }
+                else
+                {
+                    MessageBox.Show("Error al guardar los Datos\n Contacte con Soporte.", "Error!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            //guardar la lista de asistencia\
-            foreach (DataGridViewRow fila in dgvList.Rows)
+            else
             {
-                if (!fila.IsNewRow)
-                {
-                    var descripcionCell = fila.Cells["Descripcion"].Value;
-                    string descripcion = string.Empty;
-
-                    if (descripcionCell == null || string.IsNullOrEmpty(descripcionCell.ToString()))
-                    {
-                        // Asignar un valor por defecto si la celda está vacía o es nula
-                        descripcion = "No hay observaciones";
-                        fila.Cells["Descripcion"].Value = descripcion;
-                    }
-                    else
-                    {
-                        // Usar el valor actual si no está vacío
-                        descripcion = descripcionCell.ToString();
-                    }
-                   Asistencia Add = new Asistencia
-                    {
-                        Cedula = fila.Cells["Cedula"].Value.ToString(),
-
-                    };
-                }
+                MessageBox.Show("Debes seleccionar un valor diferente a 0");
             }
         }
 

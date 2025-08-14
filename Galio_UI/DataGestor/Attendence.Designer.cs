@@ -33,10 +33,7 @@ namespace Galio_UI.DataGestor
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
-            this.lblClass = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.lblGroup = new System.Windows.Forms.Label();
-            this.lbl4 = new System.Windows.Forms.Label();
             this.rbID = new System.Windows.Forms.RadioButton();
             this.rbName = new System.Windows.Forms.RadioButton();
             this.ResetAttendence = new System.Windows.Forms.Button();
@@ -46,6 +43,7 @@ namespace Galio_UI.DataGestor
             this.dgvList = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbGrupo = new System.Windows.Forms.ComboBox();
+            this.cmbLect = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).BeginInit();
             this.SuspendLayout();
@@ -86,39 +84,14 @@ namespace Galio_UI.DataGestor
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // lblClass
-            // 
-            this.lblClass.AutoSize = true;
-            this.lblClass.Location = new System.Drawing.Point(743, 208);
-            this.lblClass.Name = "lblClass";
-            this.lblClass.Size = new System.Drawing.Size(0, 13);
-            this.lblClass.TabIndex = 38;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(623, 208);
+            this.label4.Location = new System.Drawing.Point(594, 163);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(92, 13);
+            this.label4.Size = new System.Drawing.Size(110, 13);
             this.label4.TabIndex = 37;
-            this.label4.Text = "Clase Por Horario:";
-            // 
-            // lblGroup
-            // 
-            this.lblGroup.AutoSize = true;
-            this.lblGroup.Location = new System.Drawing.Point(768, 162);
-            this.lblGroup.Name = "lblGroup";
-            this.lblGroup.Size = new System.Drawing.Size(0, 13);
-            this.lblGroup.TabIndex = 36;
-            // 
-            // lbl4
-            // 
-            this.lbl4.AutoSize = true;
-            this.lbl4.Location = new System.Drawing.Point(634, 162);
-            this.lbl4.Name = "lbl4";
-            this.lbl4.Size = new System.Drawing.Size(127, 13);
-            this.lbl4.TabIndex = 35;
-            this.lbl4.Text = "Grupo Actual por Horario:";
+            this.label4.Text = "Numero de lecciones:";
             // 
             // rbID
             // 
@@ -214,16 +187,22 @@ namespace Galio_UI.DataGestor
             this.cmbGrupo.TabIndex = 26;
             this.cmbGrupo.SelectedIndexChanged += new System.EventHandler(this.cmbGrupo_SelectedIndexChanged);
             // 
+            // cmbLect
+            // 
+            this.cmbLect.FormattingEnabled = true;
+            this.cmbLect.Location = new System.Drawing.Point(710, 160);
+            this.cmbLect.Name = "cmbLect";
+            this.cmbLect.Size = new System.Drawing.Size(84, 21);
+            this.cmbLect.TabIndex = 38;
+            // 
             // Attendence
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(859, 450);
             this.ControlBox = false;
-            this.Controls.Add(this.lblClass);
+            this.Controls.Add(this.cmbLect);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.lblGroup);
-            this.Controls.Add(this.lbl4);
             this.Controls.Add(this.rbID);
             this.Controls.Add(this.rbName);
             this.Controls.Add(this.ResetAttendence);
@@ -249,10 +228,7 @@ namespace Galio_UI.DataGestor
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Label lblClass;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label lblGroup;
-        private System.Windows.Forms.Label lbl4;
         private System.Windows.Forms.RadioButton rbID;
         private System.Windows.Forms.RadioButton rbName;
         private System.Windows.Forms.Button ResetAttendence;
@@ -262,5 +238,6 @@ namespace Galio_UI.DataGestor
         private System.Windows.Forms.DataGridView dgvList;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbGrupo;
+        private System.Windows.Forms.ComboBox cmbLect;
     }
 }

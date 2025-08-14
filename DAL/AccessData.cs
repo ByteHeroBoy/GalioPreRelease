@@ -85,6 +85,33 @@ namespace DAL
             }
             return lst;
         }
+        public bool SaveAttendence(string group, List<Asistencia> lst)
+        {
+            bool doit = false;
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "INSERT INTO Asistencia (Cedula, Materia, Lecciones, FechaHora, Estado, Observaciones) Values (@Cedula, @Materia, @Lecciones, @FechaHora, @Estado, @Observaciones)";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                {
+                    foreach (Asistencia data in lst)
+                    {
+                        cmd.Parameters.AddWithValue("@Cedula", data.Cedula);
+                        cmd.Parameters.AddWithValue("@Materia", data.Materia);
+                        cmd.Parameters.AddWithValue("@Lecciones", data.Lecciones);
+                        cmd.Parameters.AddWithValue("@FechaHora", data.FechaHora);
+                        cmd.Parameters.AddWithValue("@Estado", data.Estado);
+                        cmd.Parameters.AddWithValue("@Observaciones", data.Observaciones);
+
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                    }
+                    doit = true;
+                }
+                cnt.Close();               
+            }
+            return doit;
+        }
         #endregion
     }
 }
