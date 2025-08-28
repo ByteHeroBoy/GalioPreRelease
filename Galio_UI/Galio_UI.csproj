@@ -114,6 +114,9 @@
     <EmbeddedResource Include="DataGestor\ContainerData.resx">
       <DependentUpon>ContainerData.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DataGestor\ControlAttendence.resx">
+      <DependentUpon>ControlAttendence.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataGestor\NewStudent.resx">
       <DependentUpon>NewStudent.cs</DependentUpon>
     </EmbeddedResource>
