@@ -112,6 +112,105 @@ namespace DAL
             }
             return doit;
         }
+        public bool NewStudent(Estudiante data)
+        {
+            bool doit = false;
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "INSERT INTO Estudiante (Cedula, Nombre, Grupo) values (@Cedula, @Nombre, @Grupo)";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                {
+                    cmd.Parameters.AddWithValue("@Cedula", data.Cedula);
+                    cmd.Parameters.AddWithValue("@Nombre", data.Nombre);
+                    cmd.Parameters.AddWithValue("@Grupo", data.Grupo);
+                    cmd.ExecuteNonQuery();
+                    doit = true;
+                }
+                cnt.Close();
+            }
+            return doit;
+        }
+        public bool Exist(string id)
+        {
+            bool doit = false;
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "Select a.Cedula FROM Estudiante a WHERE a.Cedula = @ID";
+                using ( SQLiteCommand cmd = new SQLiteCommand(pa,cnt))
+                {
+                    cmd.Parameters.AddWithValue("@ID", id);
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        string existid = string.Empty;
+                        while (reader.Read())
+                        {
+                            existid = reader["Cedula"].ToString();
+                        }
+                        if (existid.Length > 0)
+                        {
+                            doit = true;
+                        }
+                    }
+                }
+            }
+            return doit;
+        }
+        public bool UpdateStudent(Estudiante data)
+        {
+            bool doit = false;
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "UPDATE Estudiante SET Nombre = @Name, Grupo = @Grupo where Cedula = @ID";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa,cnt))
+                {
+                    cmd.Parameters.AddWithValue("@Name", data.Nombre);
+                    cmd.Parameters.AddWithValue("@Grupo", data.Grupo);
+                    cmd.Parameters.AddWithValue("@ID", data.Cedula);
+                    cmd.ExecuteNonQuery();
+                    doit = true;
+                }
+                cnt.Close();
+            }
+            return doit;
+        }
+        public bool DeleteStudent(Estudiante data)
+        {
+            bool success = false;
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                using (SQLiteTransaction transaction = cnt.BeginTransaction())
+                {
+                    try
+                    {
+                        string deleteAttendanceSql = "DELETE FROM Asistencia WHERE Cedula = @ID";
+                        using (SQLiteCommand deleteAttendanceCmd = new SQLiteCommand(deleteAttendanceSql, cnt))
+                        {
+                            deleteAttendanceCmd.Parameters.AddWithValue("@ID", data.Cedula);
+                            deleteAttendanceCmd.ExecuteNonQuery();
+                        }
+                        string deleteStudentSql = "DELETE FROM Estudiante WHERE Cedula = @ID";
+                        using (SQLiteCommand deleteStudentCmd = new SQLiteCommand(deleteStudentSql, cnt))
+                        {
+                            deleteStudentCmd.Parameters.AddWithValue("@ID", data.Cedula);
+                            int rowsAffected = deleteStudentCmd.ExecuteNonQuery();
+                            success = rowsAffected > 0;
+                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        Console.WriteLine($"Ocurrió un error: {ex.Message}");
+                    }
+                }
+            }
+            return success;
+        }
         #endregion
     }
 }

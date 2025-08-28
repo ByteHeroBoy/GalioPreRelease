@@ -35,6 +35,26 @@ namespace BLL
             AccessData dt = new AccessData();
             return dt.SaveAttendence(grupo, lst);
         }
+        public bool NewStudent(Estudiante data)
+        {
+            AccessData dt = new AccessData();
+            return dt.NewStudent(data);
+        }
+        public bool Exist (string id)
+        {
+            AccessData dt = new AccessData();
+            return dt.Exist(id);
+        }
+        public bool Update(Estudiante data)
+        {
+            AccessData dt = new AccessData(); ;
+            return dt.UpdateStudent(data);
+        }
+        public bool Delete(Estudiante data)
+        {
+            AccessData dt = new AccessData();
+            return dt.DeleteStudent(data);
+        }
         #endregion
     }
 }

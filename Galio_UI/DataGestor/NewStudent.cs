@@ -203,8 +203,6 @@ namespace Galio_UI.DataGestor
             if (rbOtro.Checked == true)
                 MessageBox.Show("Sea cuidadoso al ingresar la identificacion del alumno.");
         }
-
-
         private bool CheckID()
         {
             if (rbOtro.Checked == true)
@@ -260,17 +258,97 @@ namespace Galio_UI.DataGestor
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            DialogResult result = MessageBox.Show("Esta seguro que desea eliminar este estudiante?\n" +
+                "Si lo elimina, eliminara tambien los registros de asistencia, estos no se podran recuperar", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                //delete
+                Estudiante st = new Estudiante
+                { Cedula = txtid.Text };
+                Logic lg = new Logic();
+                if (lg.Delete(st))
+                {
+                    MessageBox.Show("Los datos del Estudiante se eliminaron.");
+                    DataCall();
+                    txtid.Text = string.Empty;
+                    txtNameUpdate.Text = string.Empty;
+                    Clean();
+                }
+                else
+                    MessageBox.Show("Parese que sucedio un error al momento de eliminar, intentelo de nuevo\n" +
+                        "Si se repite el error contacte con soporte");
 
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            if (!cmbGrupo.SelectedItem.ToString().Equals("Grupo"))
+            {
+                Logic logic = new Logic();
+                if (CheckID() && logic.Exist(txtid.Text))
+                {
+                    DialogResult result = MessageBox.Show("Seguro que desea actualizar los datos del estudiante?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        Estudiante data = new Estudiante()
+                        {
+                            Cedula = txtid.Text,
+                            Nombre = txtNameUpdate.Text,
+                            Grupo = cmbGrupo.SelectedItem.ToString()
+                        };
+                        if (logic.Update(data))
+                        {
+                            MessageBox.Show("Cambios aplicados exitosamente.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            DataCall();
+                            Clean();
+                        }
+                        else
+                            MessageBox.Show("Error al actualizar los datos del Estudiante.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                    MessageBox.Show("La cedula ingresada no correspaonde al formato requerido o ya existe!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+                MessageBox.Show("Debe escoger un grupo para el estudiante!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-
+            Logic logic = new Logic();
+            if (!logic.Exist(txtid.Text) && !string.IsNullOrEmpty(txtNameUpdate.Text) || !string.IsNullOrEmpty(txtid.Text))
+            {
+                if (!cmbGrupo.SelectedItem.Equals("Grupo"))
+                {
+                    Estudiante nuevo = new Estudiante
+                    {
+                        Cedula = txtid.Text,
+                        Nombre = txtApe1.Text + " " + txtApe2.Text + " " + txtName.Text,
+                        Grupo = cmbGrupo.SelectedItem.ToString()
+                    };
+                    DialogResult resul = MessageBox.Show("Desea Agregar el SIguiente estudiante?\n" +
+                      "Nombre: " + nuevo.Nombre +
+                      "\nCedula: " + nuevo.Cedula +
+                      "\nGrado: " + nuevo.Grupo, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resul == DialogResult.Yes)
+                    {
+                        if (logic.NewStudent(nuevo))
+                        {
+                            MessageBox.Show("Estudiante Agregado con Exito");
+                            Clean();
+                            DataCall();
+                        }
+                        else
+                            MessageBox.Show("Error al agregar estudiante");
+                    }
+                }
+                else
+                    MessageBox.Show("Debe seleccionar un Grado para el Estudiante.");
+            }
+            else
+                MessageBox.Show("Upss, Parece que hay un error en lo ingresado reviselo de nuevo.");
         }
     }
 }
