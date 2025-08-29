@@ -409,6 +409,7 @@ namespace Galio_UI.DataGestor
             this.btnClose.Size = new System.Drawing.Size(41, 32);
             this.btnClose.TabIndex = 6;
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // ControlAttendence
             // 

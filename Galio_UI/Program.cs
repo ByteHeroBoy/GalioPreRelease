@@ -18,7 +18,7 @@ namespace Galio_UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NewStudent());
+            Application.Run(new Attendence());
         }
     }
 }

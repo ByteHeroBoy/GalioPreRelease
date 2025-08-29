@@ -211,6 +211,30 @@ namespace DAL
             }
             return success;
         }
+        public List<Asistencia> GetAsistencias (string ID)
+        {
+            List<Asistencia> lst = new List<Asistencia>();
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "select a.Cedula, a.FechaHora, a.Estado,a.ID,a.Observaciones from Asistencia a where a.Cedula = @ID";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                {
+                    cmd.Parameters.AddWithValue("@ID", ID);
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Asistencia atte = new Asistencia
+                            {
+                                Cedula= reader["Cedula"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return lst;
+        }
         #endregion
     }
 }
