@@ -235,6 +235,27 @@ namespace DAL
             }
             return lst;
         }
+        public bool JustifyAsist(Asistencia data)
+        {
+            bool doit = true;
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "UPDATE Asistencia SET Estado = @Estado, Observaciones = @Observaciones WHERE Cedula = @Cedula and ID = @ID";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                {
+                    cmd.Parameters.AddWithValue("@Estado", data.Estado);
+                    cmd.Parameters.AddWithValue("@Observaciones", data.Observaciones);
+                    cmd.Parameters.AddWithValue("@Cedula", data.Cedula);
+                    cmd.Parameters.AddWithValue("@ID", data.ID_Asist);
+                    cmd.ExecuteNonQuery();
+                    doit = true;
+                }
+                cnt.Close();
+
+            }
+            return doit;
+        }
         #endregion
     }
 }

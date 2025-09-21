@@ -14,10 +14,11 @@ namespace Galio_UI.DataGestor
 {
     public partial class ControlAttendence : Form
     {
-        //Lista de estudiantes
+        //Lista de estudiantes en memoria
         private List<Estudiante> Estudiantes { get; set; }
-        //Lista de Asistencia
+        //Lista de Asistencia en memoria
         private List<Asistencia> ListaAsist { get; set; }
+        private Asistencia ListAsist { get; set; }
         public ControlAttendence()
         {
             InitializeComponent();
@@ -106,10 +107,10 @@ namespace Galio_UI.DataGestor
             dgvAttendence.DataSource = new List<Asistencia>();
             dgvAttendence.Refresh();
             //1
-            ListAsist = logic.GetListAttes(estid);
-            if (ListAttes.Count > 0)
+            ListaAsist = logic.GetAsistencias(estid);
+            if (ListaAsist.Count > 0)
             {
-                dgvAttendence.DataSource = ListAttes;
+                dgvAttendence.DataSource = ListaAsist;
                 dgvAttendence.Refresh();
                 dgvAttendence.Columns["DateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 HideColumns();
@@ -131,10 +132,10 @@ namespace Galio_UI.DataGestor
         {
             if (rbID.Checked == true)
                 if (txtBusca.Text.Trim().Length > 0)
-                    dgvStudents.DataSource = Students.FindAll(item => item.Cedula.ToString().Contains(txtBusca.Text.Trim()));
+                    dgvStudents.DataSource = Estudiantes.FindAll(item => item.Cedula.ToString().Contains(txtBusca.Text.Trim()));
             if (rbName.Checked == true)
                 if (txtBusca.Text.Trim().Length > 0)
-                    dgvStudents.DataSource = Students.FindAll(item => item.Name.ToString().ToUpper().Contains(txtBusca.Text.ToUpper().Trim()));
+                    dgvStudents.DataSource = Estudiantes.FindAll(item => item.Nombre.ToString().ToUpper().Contains(txtBusca.Text.ToUpper().Trim()));
         }
         private void txtBusca_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -171,10 +172,10 @@ namespace Galio_UI.DataGestor
 private void dtpAtte_ValueChanged(object sender, EventArgs e)
 {
     string date = dtpAtte.Value.ToString("yyyy/MM/dd");
-    List<ListAtte> lst = new List<ListAtte>();
-    foreach (ListAtte item in ListAttes)
+    List<Asistencia> lst = new List<Asistencia>();
+    foreach (Asistencia item in ListaAsist)
     {
-        string d = new string(item.DateTime.Take(10).ToArray());
+        string d = new string(item.FechaHora.Take(10).ToArray());
         if (date.Equals(d))
             lst.Add(item);
     }
@@ -188,20 +189,20 @@ private void dtpAtte_ValueChanged(object sender, EventArgs e)
 }
 private void dgvAttendence_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
 {
-    listAtte = new ListAtte
+    ListAsist = new Asistencia
     {
-        ID = Convert.ToInt32(dgvAttendence.Rows[e.RowIndex].Cells[0].Value.ToString()),
-        StudentID = dgvAttendence.Rows[e.RowIndex].Cells[1].Value.ToString(),
-        DateTime = dgvAttendence.Rows[e.RowIndex].Cells[2].Value.ToString(),
-        State = dgvAttendence.Rows[e.RowIndex].Cells[3].Value.ToString(),
-        Descript = dgvAttendence.Rows[e.RowIndex].Cells[4].Value.ToString()
+        ID_Asist = Convert.ToInt32(dgvAttendence.Rows[e.RowIndex].Cells[0].Value.ToString()),
+        Cedula = dgvAttendence.Rows[e.RowIndex].Cells[1].Value.ToString(),
+        FechaHora = dgvAttendence.Rows[e.RowIndex].Cells[2].Value.ToString(),
+        Estado = dgvAttendence.Rows[e.RowIndex].Cells[3].Value.ToString(),
+        Observaciones = dgvAttendence.Rows[e.RowIndex].Cells[4].Value.ToString()
     };
     if (rbAttendence.Checked == true)
     {
-        if (listAtte.State.Equals("Ausente"))
+        if (ListAsist.Estado.Equals("Ausente"))
         {
-            lblDate.Text = listAtte.DateTime;
-            lblState.Text = listAtte.State;
+            lblDate.Text = ListAsist.FechaHora;
+            lblState.Text = ListAsist.Estado;
             gbJustify.Enabled = true;
         }
         else
@@ -210,8 +211,8 @@ private void dgvAttendence_CellContentDoubleClick(object sender, DataGridViewCel
     }
     if (rbCambiar.Checked == true)
     {
-        lblDateMod.Text = listAtte.DateTime;
-        lblStateMod.Text = listAtte.State;
+        lblDateMod.Text = ListAsist.FechaHora;
+        lblStateMod.Text = ListAsist.Estado;
         gbModAttendence.Enabled = true;
     }
 }
@@ -245,16 +246,16 @@ private void btnJustify_Click(object sender, EventArgs e)
     {
         Logic logic = new Logic();
         if (!cmbJustify.SelectedItem.Equals("Seleccione"))
-            listAtte.Descript = cmbJustify.SelectedItem.ToString();
+            ListAsist.Observaciones = cmbJustify.SelectedItem.ToString();
         else
-            listAtte.Descript = txtJustify.Text.Trim();
-        listAtte.State = "Justificado";
+            ListAsist.Observaciones = txtJustify.Text.Trim();
+        ListAsist.Estado = "Justificado";
         DialogResult result = MessageBox.Show("Desea Justificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         if (result == DialogResult.Yes)
         {
-            if (logic.JustifyAttes(listAtte))
+            if (logic.JustifyAsist(ListAsist))
             {
-                dgvAttendence.DataSource = new List<ListAtte>();
+                dgvAttendence.DataSource = new List<Asistencia>();
                 MessageBox.Show("Justificacion realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CleanGbJustify();
             }
@@ -267,15 +268,15 @@ private void btnMod_Click(object sender, EventArgs e)
 {
     if (!cmbAttendence.SelectedItem.ToString().Equals("Seleccione"))
     {
-        listAtte.State = cmbAttendence.SelectedItem.ToString();
-        listAtte.Descript = "";
+        ListAsist.Estado = cmbAttendence.SelectedItem.ToString();
+        ListAsist.Observaciones = "";
         Logic logic = new Logic();
         DialogResult result = MessageBox.Show("Desea Modificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         if (result == DialogResult.Yes)
         {
-            if (logic.JustifyAttes(listAtte))
+            if (logic.JustifyAsist(ListAsist))
             {
-                dgvAttendence.DataSource = new List<ListAtte>();
+                dgvAttendence.DataSource = new List<Asistencia>();
                 MessageBox.Show("Modificacion a asistencia realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CleanGBModAtte();
             }

@@ -55,6 +55,16 @@ namespace BLL
             AccessData dt = new AccessData();
             return dt.DeleteStudent(data);
         }
+        public List<Asistencia> GetAsistencias(string ID)
+        {
+            AccessData dt = new AccessData();
+            return dt.GetAsistencias(ID);
+        }
+        public bool JustifyAsist(Asistencia data)
+        {
+            AccessData dt = new AccessData();
+            return dt.JustifyAsist(data);
+        }
         #endregion
     }
 }
