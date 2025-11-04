@@ -211,6 +211,7 @@ namespace Galio_UI.DataGestor
             this.IsMdiContainer = true;
             this.Name = "ContainerData";
             this.Text = "Container";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tst1.ResumeLayout(false);
             this.tst1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

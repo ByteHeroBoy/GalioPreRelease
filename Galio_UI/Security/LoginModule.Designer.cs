@@ -52,6 +52,7 @@ namespace Galio_UI.Security
             this.button2.Size = new System.Drawing.Size(43, 34);
             this.button2.TabIndex = 16;
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // txt2
             // 
@@ -81,6 +82,7 @@ namespace Galio_UI.Security
             this.linkLabel1.TabIndex = 13;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Recuperar Usuario";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // button1
             // 

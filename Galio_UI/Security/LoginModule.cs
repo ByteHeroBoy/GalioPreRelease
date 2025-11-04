@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -41,6 +42,27 @@ namespace Galio_UI.Security
             }
             else
                 MessageBox.Show("Error!!, Tiene campos en blanco","Error!!",MessageBoxButtons.OK,MessageBoxIcon.Error);
+        }
+        //Close all the data, not leave subprocesses running
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show("Se enviara un Correo para solicitar Recuperacion de Usuario.\n" +
+                "Espere Respuesta.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Thread hilo = new Thread(Send);
+            hilo.Start();
+        }
+        private void Send()
+        {
+            Logic lg = new Logic();
+            if (lg.MailSend("Recuperar Acceso"))
+                MessageBox.Show("Correo Enviado Satisfactoriamente.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("Error al enviar el Correo.\nContacte con Soporte.", "Error!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

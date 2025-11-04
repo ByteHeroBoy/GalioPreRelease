@@ -4,6 +4,8 @@ using ETL.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -66,5 +68,37 @@ namespace BLL
             return dt.JustifyAsist(data);
         }
         #endregion
-    }
+        #region Secondary Logic
+        //Send  support email
+        public bool MailSend(string Tipo)
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient envio = new SmtpClient();
+            bool response = false;
+            try
+            {
+                mail.From = new MailAddress("WhiteFoxSaport@outlook.com", "Correo Enviado WhiteFox", System.Text.Encoding.UTF8);
+                mail.To.Add("WhiteFoxCode@hotmail.com");
+                mail.Subject = "Galio Project";
+                mail.Body = "Support to Galio :" + Tipo;
+                mail.IsBodyHtml = true;
+                mail.Priority = MailPriority.Normal;
+                envio.Host = "smtp-mail.outlook.com";
+                envio.Port = 587;
+                envio.EnableSsl = true;// Metodo de Cifrado
+                envio.UseDefaultCredentials = false;
+                envio.Credentials = new NetworkCredential("WhiteFoxCodeSaport@outlook.com", "CodingJust4Fun");
+
+                envio.Send(mail);
+                mail.Dispose();
+                response = true; ;
+            }
+            catch (Exception ex)
+            {
+                response = false;
+            }
+            return response;
+        }
+            #endregion
+        }
 }
