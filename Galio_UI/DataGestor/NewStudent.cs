@@ -1,5 +1,6 @@
 ﻿using BLL;
 using ETL.DataGen;
+using iTextSharp.xmp.impl;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -286,6 +287,7 @@ namespace Galio_UI.DataGestor
             if (!cmbGrupo.SelectedItem.ToString().Equals("Grupo"))
             {
                 Logic logic = new Logic();
+                //revisar la cedual si corresponde al formato y verificar si existe
                 if (CheckID() && logic.Exist(txtid.Text))
                 {
                     DialogResult result = MessageBox.Show("Seguro que desea actualizar los datos del estudiante?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -308,7 +310,7 @@ namespace Galio_UI.DataGestor
                     }
                 }
                 else
-                    MessageBox.Show("La cedula ingresada no correspaonde al formato requerido o ya existe!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La cedula ingresada no corresponde al formato requerido o ya existe!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
                 MessageBox.Show("Debe escoger un grupo para el estudiante!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -328,20 +330,25 @@ namespace Galio_UI.DataGestor
                         Nombre = txtApe1.Text + " " + txtApe2.Text + " " + txtName.Text,
                         Grupo = cmbGrupo.SelectedItem.ToString()
                     };
-                    DialogResult resul = MessageBox.Show("Desea Agregar el SIguiente estudiante?\n" +
+                    DialogResult resul = MessageBox.Show("Desea Agregar el Siguiente estudiante?\n" +
                       "Nombre: " + nuevo.Nombre +
                       "\nCedula: " + nuevo.Cedula +
                       "\nGrado: " + nuevo.Grupo, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (resul == DialogResult.Yes)
                     {
-                        if (logic.NewStudent(nuevo))
+                        //revisar la cedual si corresponde al formato y verificar si existe
+                        if (CheckID() && !logic.Exist(txtid.Text.Trim()))
                         {
-                            MessageBox.Show("Estudiante Agregado con Exito");
-                            Clean();
-                            DataCall();
-                        }
-                        else
-                            MessageBox.Show("Error al agregar estudiante");
+                            if (logic.NewStudent(nuevo))
+                            {
+                                MessageBox.Show("Estudiante Agregado con Exito");
+                                Clean();
+                                DataCall();
+                            }
+                            else
+                                MessageBox.Show("Error al agregar estudiante");
+                        }else
+                            MessageBox.Show("La cedula ingresada no corresponde al formato requerido o ya existe.");
                     }
                 }
                 else

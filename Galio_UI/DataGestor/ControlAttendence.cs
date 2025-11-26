@@ -284,8 +284,6 @@ private void btnMod_Click(object sender, EventArgs e)
     }
     else //Mensaje de Error
         MessageBox.Show("Debe seleccionar un opcion para modificar la asistencia", "Error!");
-}
-
-
+   }
     }
 }

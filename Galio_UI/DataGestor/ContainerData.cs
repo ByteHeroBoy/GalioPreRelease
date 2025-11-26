@@ -16,6 +16,11 @@ namespace Galio_UI.DataGestor
         public ContainerData()
         {
             InitializeComponent();
+            Start();
+        }
+        private void Start()
+        {
+            date1.Text = DateTime.Now.ToString("yyyy/MM/dd");
         }
         private void S1_Click(object sender, EventArgs e)
         {

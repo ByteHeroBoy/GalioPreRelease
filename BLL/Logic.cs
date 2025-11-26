@@ -3,11 +3,8 @@ using ETL.DataGen;
 using ETL.Security;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
@@ -67,6 +64,13 @@ namespace BLL
             AccessData dt = new AccessData();
             return dt.JustifyAsist(data);
         }
+        public DataStats Estadisticas(string id)
+        {
+            DataStats data = new DataStats();
+            AccessData dt = new AccessData();
+            data = dt.Estadisticas(id);
+            return data;
+        }
         #endregion
         #region Secondary Logic
         //Send  support email
@@ -93,7 +97,7 @@ namespace BLL
                 mail.Dispose();
                 response = true; ;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 response = false;
             }

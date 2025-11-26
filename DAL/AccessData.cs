@@ -29,7 +29,7 @@ namespace DAL
         #endregion
 
         #region Security
-        public Users Login (Users data)
+        public Users Login(Users data)
         {
             Users usr = new Users();
             using (SQLiteConnection cnt = CreateConnection())
@@ -49,11 +49,11 @@ namespace DAL
                             usr.UserName = reader["UserName"].ToString();
                         }
                     }
-                   
+
                 }
                 cnt.Close();
             }
-                return usr;
+            return usr;
         }
         #endregion
         #region DataGestor
@@ -108,7 +108,7 @@ namespace DAL
                     }
                     doit = true;
                 }
-                cnt.Close();               
+                cnt.Close();
             }
             return doit;
         }
@@ -138,7 +138,7 @@ namespace DAL
             {
                 cnt.Open();
                 string pa = "Select a.Cedula FROM Estudiante a WHERE a.Cedula = @ID";
-                using ( SQLiteCommand cmd = new SQLiteCommand(pa,cnt))
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
                 {
                     cmd.Parameters.AddWithValue("@ID", id);
                     cmd.CommandType = System.Data.CommandType.Text;
@@ -165,7 +165,7 @@ namespace DAL
             {
                 cnt.Open();
                 string pa = "UPDATE Estudiante SET Nombre = @Name, Grupo = @Grupo where Cedula = @ID";
-                using (SQLiteCommand cmd = new SQLiteCommand(pa,cnt))
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
                 {
                     cmd.Parameters.AddWithValue("@Name", data.Nombre);
                     cmd.Parameters.AddWithValue("@Grupo", data.Grupo);
@@ -211,7 +211,7 @@ namespace DAL
             }
             return success;
         }
-        public List<Asistencia> GetAsistencias (string ID)
+        public List<Asistencia> GetAsistencias(string ID)
         {
             List<Asistencia> lst = new List<Asistencia>();
             using (SQLiteConnection cnt = CreateConnection())
@@ -227,8 +227,17 @@ namespace DAL
                         {
                             Asistencia atte = new Asistencia
                             {
-                                Cedula= reader["Cedula"].ToString()
+                                Cedula = reader["Cedula"].ToString(),
+                                FechaHora = reader["FechaHora"].ToString(),
+                                Estado = reader["Estado"].ToString(),
+                                ID_Asist = Convert.ToInt32(reader["ID"].ToString()),
+                                Observaciones = reader["Observaciones"].ToString()
                             };
+                            if (atte.Cedula.Equals("0"))
+                                atte.Cedula = ID;
+                            if (string.IsNullOrEmpty(atte.Observaciones))
+                                atte.Observaciones = "No hay observaciones";
+                            lst.Add(atte);
                         }
                     }
                 }
@@ -256,7 +265,42 @@ namespace DAL
             }
             return doit;
         }
-        #endregion
+        public DataStats Estadisticas(string id)
+        {
+            DataStats stats = new DataStats();
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "SELECT" +
+                            "(SELECT COUNT(*) FROM Asistencia WHERE Cedula = @ID) AS count1," +
+                            "(SELECT COUNT(*) FROM Asistencia WHERE Cedula = @ID AND (Estado = 'Presente' OR Estado = 'Justificado') AS count2";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                {
+                    cmd.Parameters.AddWithValue("@ID", id);
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            //Cantidad total de asistencias
+                            stats.Asistencias = reader.GetInt32(0);
+                            //Cantidad de asistencias presentes o justificadas
+                            stats.Ausencias = reader.GetInt32(1);
+                        }
+                        //Porcentaje de asistencias
+                        if (stats.Asistencias > 0)
+                        {
+                            stats.PorcentajeAsistencias = (double)stats.Ausencias / stats.Asistencias * 100;
+                        }
+                        else
+                        {
+                            stats.PorcentajeAsistencias = 0;
+                        }
+                    }
+                }
+                return stats;
+            }
+            #endregion
+        }
     }
 }
  

@@ -37,14 +37,14 @@ namespace Galio_UI.DataGestor
             //Hide Group Column
             dgvList.Columns["Grupo"].Visible = false;
             //AutoSize For Name Column Adjust to size Name
-            dgvList.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;       
+            dgvList.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             foreach (DataGridViewColumn item in dgvList.Columns)
-            {               
-                if (item.Index !=  0 && item.Index != 1)
-                 {
-                     item.ReadOnly = true;
-                 }      
-            }
+            {
+                if (item.Index != 0 && item.Index != 1)
+                {
+                    item.ReadOnly = true;
+                }
+            }  
         }  
         private void DgvList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
