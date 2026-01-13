@@ -375,6 +375,7 @@ namespace Galio_UI.DataGestor
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1169, 407);
+            this.ControlBox = false;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.rbOtro);
@@ -397,7 +398,7 @@ namespace Galio_UI.DataGestor
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Name = "NewStudent";
-            this.Text = "NewStudent";
+            this.Text = "Modulo de Estudiantes";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
