@@ -2,12 +2,7 @@
 using ETL.DataGen;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Galio_UI.DataGestor
@@ -16,9 +11,11 @@ namespace Galio_UI.DataGestor
     {
         //Lista de estudiantes en memoria
         private List<Estudiante> Estudiantes { get; set; }
-        //Lista de Asistencia en memoria
+        //Lista de Asistencias en memoria
         private List<Asistencia> ListaAsist { get; set; }
-        private Asistencia ListAsist { get; set; }
+        //Objeto para modificar una Asistencia
+        private Asistencia Asistencia { get; set; }
+
         public ControlAttendence()
         {
             InitializeComponent();
@@ -64,7 +61,7 @@ namespace Galio_UI.DataGestor
         private void Start()
         {
 
-            Logic logic = new Logic();
+            logic logic = new logic();
             Estudiantes = logic.ListGroup(cmbGrupo.SelectedItem.ToString());
             dgvStudents.DataSource = Estudiantes;
             dgvStudents.Refresh();
@@ -73,8 +70,14 @@ namespace Galio_UI.DataGestor
         }
         private void HideColumns()
         {
-            dgvAttendence.Columns["ID"].Visible = false;
-            dgvAttendence.Columns["Descript"].Visible = false;
+            dgvAttendence.Columns["ID_Asist"].Visible = false;
+        }
+        private void CleanGBModAtte()
+        {
+            lblDateMod.Text = string.Empty;
+            lblStateMod.Text = string.Empty;
+            cmbAttendence.SelectedItem = "Seleccione";
+            gbModAttendence.Enabled = false;
         }
         private void CleanGbJustify()
         {
@@ -84,35 +87,36 @@ namespace Galio_UI.DataGestor
             txtJustify.Text = string.Empty;
             gbJustify.Enabled = false;
         }
-        private void CleanGBModAtte()
+        /// <summary>
+        /// De aqui en adelante son los metodos privados para eventos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void txtBusca_TextChanged(object sender, EventArgs e)
         {
-            lblDateMod.Text = string.Empty;
-            lblStateMod.Text = string.Empty;
-            cmbAttendence.SelectedItem = "Seleccione";
-            gbModAttendence.Enabled = false;
+            if (rbID.Checked == true)
+                if (txtBusca.Text.Trim().Length > 0)
+                    dgvStudents.DataSource = Estudiantes.FindAll(item => item.Cedula.ToString().Contains(txtBusca.Text.Trim()));
+            if (rbName.Checked == true)
+                if (txtBusca.Text.Trim().Length > 0)
+                    dgvStudents.DataSource = Estudiantes.FindAll(item => item.Nombre.ToString().ToUpper().Contains(txtBusca.Text.ToUpper().Trim()));
+
         }
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-        private void cmbGrupo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Start();
-        }
-        //Dar click para traer la lista de asistencia del alumno
+
         private void dgvStudents_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             string estid = dgvStudents.Rows[e.RowIndex].Cells[0].Value.ToString();
-            Logic logic = new Logic();
+            logic logic = new logic();
             dgvAttendence.DataSource = new List<Asistencia>();
             dgvAttendence.Refresh();
             //1
             ListaAsist = logic.GetAsistencias(estid);
-            if (ListaAsist.Count > 0)
+            if (ListaAsist.Count > 0 )
             {
                 dgvAttendence.DataSource = ListaAsist;
                 dgvAttendence.Refresh();
-                dgvAttendence.Columns["DateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgvAttendence.Columns["FechaHora"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 HideColumns();
                 gb2.Enabled = true;
                 foreach (DataGridViewColumn item in dgvAttendence.Columns)
@@ -126,164 +130,109 @@ namespace Galio_UI.DataGestor
                     "Si considera que es un error comuniquese con Soporte.");
                 gb2.Enabled = false;
             }
+
         }
-        //Buscar por Nombre o por Cedula segun CMB
-        private void textBox1_TextChanged(object sender, EventArgs e)
+
+        private void cmbGrupo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (rbID.Checked == true)
-                if (txtBusca.Text.Trim().Length > 0)
-                    dgvStudents.DataSource = Estudiantes.FindAll(item => item.Cedula.ToString().Contains(txtBusca.Text.Trim()));
-            if (rbName.Checked == true)
-                if (txtBusca.Text.Trim().Length > 0)
-                    dgvStudents.DataSource = Estudiantes.FindAll(item => item.Nombre.ToString().ToUpper().Contains(txtBusca.Text.ToUpper().Trim()));
+            Start();
         }
-        private void txtBusca_KeyPress(object sender, KeyPressEventArgs e)
+
+        private void dtpAtte_ValueChanged(object sender, EventArgs e)
         {
-            /// <summary>
-            /// Code from : https://ourcodeworld.com/articles/read/507/how-to-allow-only-numbers-inside-a-textbox-in-winforms-c-sharp
-            /// <summary>
-            // Verify that the pressed key isn't CTRL or any non-numeric digit
-            if (rbID.Checked == true)
+            string date = dtpAtte.Value.ToString("yyyy/MM/dd");
+            List<Asistencia> lst = new List<Asistencia>();
+            foreach (Asistencia item in ListaAsist)
             {
-                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+                string d = new string(item.FechaHora.Take(10).ToArray());
+                if (date.Equals(d))
+                    lst.Add(item);
+            }
+            if (lst.Count > 0)
+            {
+                dgvAttendence.DataSource = lst;
+                dgvAttendence.Refresh();
+            }
+            else
+                MessageBox.Show("El estudiante no cuenta con asistencias en el dia seleccionado.");
+
+        }
+
+        private void dgvAttendence_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Asistencia = new Asistencia
+            {
+                ID_Asist= Convert.ToInt32(dgvAttendence.Rows[e.RowIndex].Cells[0].Value.ToString()),
+                Cedula= dgvAttendence.Rows[e.RowIndex].Cells[1].Value.ToString(),
+                FechaHora = dgvAttendence.Rows[e.RowIndex].Cells[2].Value.ToString(),
+                Estado = dgvAttendence.Rows[e.RowIndex].Cells[5].Value.ToString(),
+                Observaciones = dgvAttendence.Rows[e.RowIndex].Cells[4].Value.ToString()
+            };
+            if (rbAttendence.Checked == true)
+            {
+                if (Asistencia.Estado.Equals("Ausente"))
                 {
-                    e.Handled = true;
-                    //Some Error Message ??
+                    lblDate.Text = Asistencia.FechaHora;
+                    lblState.Text = Asistencia.Estado;
+                    gbJustify.Enabled = true;
+                }
+                else
+                    MessageBox.Show("No se puede Justificar una asistencia que no es Ausencia\n" +
+                        "Si desea modificar una asistencia puede hacerlo en el otro modulo.", "Error!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (rbCambiar.Checked == true)
+            {
+                lblDateMod.Text = Asistencia.FechaHora;
+                lblStateMod.Text = Asistencia.Estado;
+                gbModAttendence.Enabled = true;
+            }
+        }
+
+        private void btnMod_Click(object sender, EventArgs e)
+        {
+            if (!cmbAttendence.SelectedItem.ToString().Equals("Seleccione"))
+            {
+                Asistencia.Estado = cmbAttendence.SelectedItem.ToString();
+                logic logic = new logic();
+                DialogResult result  = MessageBox.Show("Desea Modificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    if (logic.JustifyAsist(Asistencia))
+                    {
+                        dgvAttendence.DataSource = new List<Asistencia>();
+                        MessageBox.Show("Modificacion a asistencia realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CleanGBModAtte();
+                    }
                 }
             }
-            /*
-               // If you want, you can allow decimal (float) numbers
-               if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-               {
-                   e.Handled = true;
-               }
-             */
-            /// <summary>
-            /// Code from : https://stackoverflow.com/questions/8321871/how-to-make-a-textbox-accept-only-alphabetic-characters
-            /// User: https://stackoverflow.com/users/570150/v4vendetta
-            /// <summary>
-            // Verify that the pressed key isn't CTRL or any nuemric Digit
-            if (rbName.Checked == true)
-            {
-                e.Handled = !(char.IsLetter(e.KeyChar) || e.KeyChar == (char) Keys.Back);
-    }
-}
-//Date Picker Change select attendence for that day
-private void dtpAtte_ValueChanged(object sender, EventArgs e)
-{
-    string date = dtpAtte.Value.ToString("yyyy/MM/dd");
-    List<Asistencia> lst = new List<Asistencia>();
-    foreach (Asistencia item in ListaAsist)
-    {
-        string d = new string(item.FechaHora.Take(10).ToArray());
-        if (date.Equals(d))
-            lst.Add(item);
-    }
-    if (lst.Count > 0)
-    {
-        dgvAttendence.DataSource = lst;
-        dgvAttendence.Refresh();
-    }
-    else
-        MessageBox.Show("El estudiante no cuenta con asistencias en el dia seleccionado.");
-}
-private void dgvAttendence_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-{
-    ListAsist = new Asistencia
-    {
-        ID_Asist = Convert.ToInt32(dgvAttendence.Rows[e.RowIndex].Cells[0].Value.ToString()),
-        Cedula = dgvAttendence.Rows[e.RowIndex].Cells[1].Value.ToString(),
-        FechaHora = dgvAttendence.Rows[e.RowIndex].Cells[2].Value.ToString(),
-        Estado = dgvAttendence.Rows[e.RowIndex].Cells[3].Value.ToString(),
-        Observaciones = dgvAttendence.Rows[e.RowIndex].Cells[4].Value.ToString()
-    };
-    if (rbAttendence.Checked == true)
-    {
-        if (ListAsist.Estado.Equals("Ausente"))
-        {
-            lblDate.Text = ListAsist.FechaHora;
-            lblState.Text = ListAsist.Estado;
-            gbJustify.Enabled = true;
+            else //Mensaje de Error
+                MessageBox.Show("Debe seleccionar un opcion para modificar la asistencia", "Error!");
         }
-        else
-            MessageBox.Show("No se puede Justificar una asistencia que no es Ausencia\n" +
-                "Si desea modificar una asistencia puede hacerlo en el otro modulo.", "Error!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    }
-    if (rbCambiar.Checked == true)
-    {
-        lblDateMod.Text = ListAsist.FechaHora;
-        lblStateMod.Text = ListAsist.Estado;
-        gbModAttendence.Enabled = true;
-    }
-}
-private void cmbJustify_SelectedIndexChanged(object sender, EventArgs e)
-{
-    if (cmbJustify.SelectedItem.ToString().Equals("Otro"))
-        txtJustify.Enabled = true;
-    else
-        txtJustify.Enabled = false;
-}
-private void rbCambiar_CheckedChanged(object sender, EventArgs e)
-{
-    if (rbCambiar.Checked == true)
-    {
-        gbJustify.Enabled = false;
-        lblDate.Text = string.Empty;
-        lblState.Text = string.Empty;
-        cmbJustify.SelectedItem = "Seleccione";
-    }
-}
-private void rbAttendence_CheckedChanged(object sender, EventArgs e)
-{
-    gbModAttendence.Enabled = false;
-    lblDateMod.Text = string.Empty;
-    lblStateMod.Text = string.Empty;
-    cmbAttendence.SelectedItem = "Seleccione";
-}
-private void btnJustify_Click(object sender, EventArgs e)
-{
-    if (!cmbJustify.SelectedItem.Equals("Seleccione") || !string.IsNullOrWhiteSpace(txtJustify.Text.Trim()))
-    {
-        Logic logic = new Logic();
-        if (!cmbJustify.SelectedItem.Equals("Seleccione"))
-            ListAsist.Observaciones = cmbJustify.SelectedItem.ToString();
-        else
-            ListAsist.Observaciones = txtJustify.Text.Trim();
-        ListAsist.Estado = "Justificado";
-        DialogResult result = MessageBox.Show("Desea Justificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-        if (result == DialogResult.Yes)
+
+        private void btnJustify_Click(object sender, EventArgs e)
         {
-            if (logic.JustifyAsist(ListAsist))
+            if (!cmbJustify.SelectedItem.Equals("Seleccione") || !string.IsNullOrWhiteSpace(txtJustify.Text.Trim()))
             {
-                dgvAttendence.DataSource = new List<Asistencia>();
-                MessageBox.Show("Justificacion realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CleanGbJustify();
+                logic logic = new logic();
+                if (!cmbJustify.SelectedItem.Equals("Seleccione"))
+                    Asistencia.Estado = cmbJustify.SelectedItem.ToString();
+                else
+                    Asistencia.Estado = txtJustify.Text.Trim();
+                Asistencia.Descripcion = "Ausencia Justificada";
+                DialogResult result = MessageBox.Show("Desea Justificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    if (logic.JustifyAsist(Asistencia))
+                    {
+                        dgvAttendence.DataSource = new List<Asistencia>();
+                        MessageBox.Show("Justificacion realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CleanGbJustify();
+                    }
+                }
             }
+            else
+                MessageBox.Show("Debe seleccionar o escribir una justificacion.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
         }
-    }
-    else
-        MessageBox.Show("Debe seleccionar o escribir una justificacion.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-}
-private void btnMod_Click(object sender, EventArgs e)
-{
-    if (!cmbAttendence.SelectedItem.ToString().Equals("Seleccione"))
-    {
-        ListAsist.Estado = cmbAttendence.SelectedItem.ToString();
-        ListAsist.Observaciones = "";
-        Logic logic = new Logic();
-        DialogResult result = MessageBox.Show("Desea Modificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-        if (result == DialogResult.Yes)
-        {
-            if (logic.JustifyAsist(ListAsist))
-            {
-                dgvAttendence.DataSource = new List<Asistencia>();
-                MessageBox.Show("Modificacion a asistencia realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CleanGBModAtte();
-            }
-        }
-    }
-    else //Mensaje de Error
-        MessageBox.Show("Debe seleccionar un opcion para modificar la asistencia", "Error!");
-   }
     }
 }

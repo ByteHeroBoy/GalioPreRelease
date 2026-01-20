@@ -28,7 +28,7 @@ namespace Galio_UI.DataGestor
 
         private void Start()
         {
-            Logic logic = new Logic();
+            logic logic = new logic();
             List<Estudiante> est = logic.ListGroup(cmbGrupo.SelectedItem.ToString());
             dgvList.DataSource = est;
             data = est;
@@ -157,7 +157,7 @@ namespace Galio_UI.DataGestor
                         save.Add(Ast);
                     }
                 }
-                Logic logic = new Logic();
+                logic logic = new logic();
                 string cmbG = cmbGrupo.SelectedItem.ToString();
                 if (logic.SaveAttendence(save, cmbG))
                 {

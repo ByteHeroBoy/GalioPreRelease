@@ -147,6 +147,7 @@ namespace Galio_UI.DataGestor
             this.btnMod.TabIndex = 2;
             this.btnMod.Text = "Modificar";
             this.btnMod.UseVisualStyleBackColor = true;
+            this.btnMod.Click += new System.EventHandler(this.btnMod_Click);
             // 
             // label7
             // 
@@ -202,6 +203,7 @@ namespace Galio_UI.DataGestor
             this.dtpAtte.Name = "dtpAtte";
             this.dtpAtte.Size = new System.Drawing.Size(181, 20);
             this.dtpAtte.TabIndex = 2;
+            this.dtpAtte.ValueChanged += new System.EventHandler(this.dtpAtte_ValueChanged);
             // 
             // dgvAttendence
             // 
@@ -210,6 +212,7 @@ namespace Galio_UI.DataGestor
             this.dgvAttendence.Name = "dgvAttendence";
             this.dgvAttendence.Size = new System.Drawing.Size(353, 150);
             this.dgvAttendence.TabIndex = 1;
+            this.dgvAttendence.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAttendence_CellContentDoubleClick);
             // 
             // gbJustify
             // 
@@ -285,6 +288,7 @@ namespace Galio_UI.DataGestor
             this.btnJustify.TabIndex = 0;
             this.btnJustify.Text = "Justificar";
             this.btnJustify.UseVisualStyleBackColor = true;
+            this.btnJustify.Click += new System.EventHandler(this.btnJustify_Click);
             // 
             // label6
             // 
@@ -350,6 +354,7 @@ namespace Galio_UI.DataGestor
             this.cmbGrupo.Name = "cmbGrupo";
             this.cmbGrupo.Size = new System.Drawing.Size(121, 21);
             this.cmbGrupo.TabIndex = 3;
+            this.cmbGrupo.SelectedIndexChanged += new System.EventHandler(this.cmbGrupo_SelectedIndexChanged);
             // 
             // txtBusca
             // 
@@ -357,6 +362,7 @@ namespace Galio_UI.DataGestor
             this.txtBusca.Name = "txtBusca";
             this.txtBusca.Size = new System.Drawing.Size(126, 20);
             this.txtBusca.TabIndex = 2;
+            this.txtBusca.TextChanged += new System.EventHandler(this.txtBusca_TextChanged);
             // 
             // label1
             // 
@@ -374,6 +380,7 @@ namespace Galio_UI.DataGestor
             this.dgvStudents.Name = "dgvStudents";
             this.dgvStudents.Size = new System.Drawing.Size(407, 251);
             this.dgvStudents.TabIndex = 0;
+            this.dgvStudents.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStudents_CellContentDoubleClick);
             // 
             // groupBox1
             // 
@@ -409,7 +416,6 @@ namespace Galio_UI.DataGestor
             this.btnClose.Size = new System.Drawing.Size(41, 32);
             this.btnClose.TabIndex = 6;
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // ControlAttendence
             // 

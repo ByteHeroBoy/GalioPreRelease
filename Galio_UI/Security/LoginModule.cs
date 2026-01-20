@@ -30,7 +30,7 @@ namespace Galio_UI.Security
                     UserName = txt1.Text,
                     UserPass = txt2.Text
                 };
-                Logic lg = new Logic();
+                logic lg = new logic();
                 if (lg.Login(usr))
                 {
                     ContainerData cnt = new ContainerData();
@@ -58,7 +58,7 @@ namespace Galio_UI.Security
         }
         private void Send()
         {
-            Logic lg = new Logic();
+            logic lg = new logic();
             if (lg.MailSend("Recuperar Acceso"))
                 MessageBox.Show("Correo Enviado Satisfactoriamente.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else

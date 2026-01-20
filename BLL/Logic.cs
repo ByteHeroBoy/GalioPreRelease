@@ -8,7 +8,7 @@ using System.Net.Mail;
 
 namespace BLL
 {
-    public class Logic
+    public class logic
     {
         #region Login
         public bool Login(Users data)

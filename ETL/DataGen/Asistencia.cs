@@ -13,8 +13,12 @@ namespace ETL.DataGen
         public string Materia { get; set; }
         public int  Lecciones { get; set; }
         public string  FechaHora { get; set; }
+        //Estado de la asistencia ya sea Ausencia, presente, tardia o justificado....
         public string Estado { get; set; }
+        //Observaciones que el profesor ingresa
         public string Observaciones { get; set; }
+        //descripcion de la asistencia al ser justificada
+        public string Descripcion { get; set; }
         public Asistencia()
         {
             ID_Asist = int.MinValue;
@@ -24,6 +28,7 @@ namespace ETL.DataGen
             FechaHora = string.Empty;
             Estado = string.Empty;
             Observaciones = string.Empty;
+            Descripcion = string.Empty;
         }
     }
 }

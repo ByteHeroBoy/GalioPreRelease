@@ -60,7 +60,7 @@ namespace Galio_UI.DataGestor
         }
         private void DataCall()
         {
-            Logic logic = new Logic();
+            logic logic = new logic();
             List<Estudiante> list = logic.ListGroup(cmbGrupoAct.SelectedItem.ToString());
             Students = list;
             dgvList.DataSource = list;
@@ -266,7 +266,7 @@ namespace Galio_UI.DataGestor
                 //delete
                 Estudiante st = new Estudiante
                 { Cedula = txtid.Text };
-                Logic lg = new Logic();
+                logic lg = new logic();
                 if (lg.Delete(st))
                 {
                     MessageBox.Show("Los datos del Estudiante se eliminaron.");
@@ -286,7 +286,7 @@ namespace Galio_UI.DataGestor
         {
             if (!cmbGrupo.SelectedItem.ToString().Equals("Grupo"))
             {
-                Logic logic = new Logic();
+                logic logic = new logic();
                 //revisar la cedual si corresponde al formato y verificar si existe
                 if (CheckID() && logic.Exist(txtid.Text))
                 {
@@ -319,7 +319,7 @@ namespace Galio_UI.DataGestor
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Logic logic = new Logic();
+            logic logic = new logic();
             if (!logic.Exist(txtid.Text) && !string.IsNullOrEmpty(txtNameUpdate.Text) || !string.IsNullOrEmpty(txtid.Text))
             {
                 if (!cmbGrupo.SelectedItem.Equals("Grupo"))

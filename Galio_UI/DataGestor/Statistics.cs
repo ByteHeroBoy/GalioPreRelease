@@ -35,7 +35,7 @@ namespace Galio_UI.DataGestor
         }
         private void Start()
         {
-            Logic logic = new Logic();
+            logic logic = new logic();
             Lst = logic.ListGroup(cmbGrupo.SelectedItem.ToString());
             dgvList.DataSource = Lst;
             dgvList.Refresh();
@@ -57,7 +57,7 @@ namespace Galio_UI.DataGestor
         }
         private void PDF(int Case, PdfReports PdfData)
         {
-            Logic logic = new Logic();
+            logic logic = new logic();
 
             string nombreCarpeta = PdfData.FolderName;
             string rutaDocumentos = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -190,7 +190,7 @@ namespace Galio_UI.DataGestor
         private void dgvList_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             string id = dgvList.Rows[e.RowIndex].Cells[0].Value.ToString();
-            Logic logic = new Logic();
+            logic logic = new logic();
             //data = logic.Statistics(id);
             data.ID_Estudiante = id;
             data.PorcentajeAsistencias = (data.PorcentajeAsistencias / Convert.ToDouble(lblTeacher.Text)) * 100;
