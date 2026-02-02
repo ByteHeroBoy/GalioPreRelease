@@ -15,9 +15,9 @@ namespace ETL.DataGen
         public string  FechaHora { get; set; }
         //Estado de la asistencia ya sea Ausencia, presente, tardia o justificado....
         public string Estado { get; set; }
-        //Observaciones que el profesor ingresa
+        //Observaciones que el profesor ingresa al pasar asistencia
         public string Observaciones { get; set; }
-        //descripcion de la asistencia al ser justificada
+        //descripcion de la asistencia al ser justificada, ejemplo al colocar Otro en la descripcion se guarda lo del campo de otro
         public string Descripcion { get; set; }
         public Asistencia()
         {

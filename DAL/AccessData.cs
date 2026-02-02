@@ -217,7 +217,7 @@ namespace DAL
             using (SQLiteConnection cnt = CreateConnection())
             {
                 cnt.Open();
-                string pa = "select a.Cedula, a.FechaHora, a.Estado,a.ID,a.Observaciones from Asistencia a where a.Cedula = @ID";
+                string pa = "select a.Cedula, a.FechaHora, a.Estado,a.ID,a.Observaciones, a.Descripcion, a.Lecciones,a.Materia from Asistencia a where a.Cedula = @ID";
                 using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
                 {
                     cmd.Parameters.AddWithValue("@ID", ID);
@@ -231,7 +231,10 @@ namespace DAL
                                 FechaHora = reader["FechaHora"].ToString(),
                                 Estado = reader["Estado"].ToString(),
                                 ID_Asist = Convert.ToInt32(reader["ID"].ToString()),
-                                Observaciones = reader["Observaciones"].ToString()
+                                Observaciones = reader["Observaciones"].ToString(),
+                                Descripcion = reader["Descripcion"].ToString(),
+                                Lecciones = Convert.ToInt32(reader["Lecciones"].ToString()),
+                                Materia = reader["Materia"].ToString()
                             };
                             if (atte.Cedula.Equals("0"))
                                 atte.Cedula = ID;

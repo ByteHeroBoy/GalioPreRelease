@@ -254,6 +254,7 @@ namespace Galio_UI.DataGestor
             this.cmbJustify.Name = "cmbJustify";
             this.cmbJustify.Size = new System.Drawing.Size(93, 21);
             this.cmbJustify.TabIndex = 8;
+            this.cmbJustify.SelectedIndexChanged += new System.EventHandler(this.cmbJustify_SelectedIndexChanged);
             // 
             // txtJustify
             // 
@@ -416,12 +417,14 @@ namespace Galio_UI.DataGestor
             this.btnClose.Size = new System.Drawing.Size(41, 32);
             this.btnClose.TabIndex = 6;
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // ControlAttendence
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1239, 521);
+            this.ControlBox = false;
             this.Controls.Add(this.gb2);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);

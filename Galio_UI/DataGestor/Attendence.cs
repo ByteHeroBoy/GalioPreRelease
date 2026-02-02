@@ -131,29 +131,24 @@ namespace Galio_UI.DataGestor
                 {
                     if (!fila.IsNewRow)
                     {
-                        var descripcionCell = fila.Cells["Observaciones"].Value;
-                        string descripcion = string.Empty;
+                        var ObservacionesCell = fila.Cells["Observaciones"].Value;
 
-                        if (descripcionCell == null || string.IsNullOrEmpty(descripcionCell.ToString()))
+                        if (ObservacionesCell == null || string.IsNullOrEmpty(ObservacionesCell.ToString()))
                         {
-                            // Asignar un valor por defecto si la celda está vacía o es nula
-                            descripcion = "No hay observaciones";
-                            fila.Cells["Observaciones"].Value = descripcion;
-                        }
-                        else
-                        {
-                            // Usar el valor actual si no está vacío
-                            descripcion = descripcionCell.ToString();
+                            fila.Cells["Observaciones"].Value = "No hay Observaciones";
                         }
                         Asistencia Ast = new Asistencia
                         {
                             Cedula = fila.Cells["Cedula"].Value.ToString(),
                             FechaHora = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                             Estado = fila.Cells["Asistencia"].Value.ToString(),
-                            Observaciones = descripcion,
                             Materia = classt,
-                            Lecciones = Convert.ToInt32(cmbLect.SelectedItem.ToString())
+                            Lecciones = Convert.ToInt32(cmbLect.SelectedItem.ToString()),
+                            Observaciones = fila.Cells["Observaciones"].Value.ToString()
                         };
+
+
+                        //                   
                         save.Add(Ast);
                     }
                 }

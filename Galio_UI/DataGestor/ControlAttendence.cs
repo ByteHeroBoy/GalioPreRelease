@@ -117,7 +117,8 @@ namespace Galio_UI.DataGestor
                 dgvAttendence.DataSource = ListaAsist;
                 dgvAttendence.Refresh();
                 dgvAttendence.Columns["FechaHora"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                HideColumns();
+                //HideColumns();
+                dgvAttendence.Columns["ID_Asist"].Visible = false;
                 gb2.Enabled = true;
                 foreach (DataGridViewColumn item in dgvAttendence.Columns)
                 {
@@ -233,6 +234,22 @@ namespace Galio_UI.DataGestor
             else
                 MessageBox.Show("Debe seleccionar o escribir una justificacion.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void cmbJustify_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbJustify.SelectedItem.ToString().Equals("Otro"))
+                txtJustify.Enabled = true;
+            else
+            {
+                txtJustify.Enabled = false;
+                txtJustify.Text = "";
+            }
         }
     }
 }
