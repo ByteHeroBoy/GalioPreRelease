@@ -18,7 +18,7 @@ namespace Galio_UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ContainerData());
+            Application.Run(new Statistics());
         }
     }
 }

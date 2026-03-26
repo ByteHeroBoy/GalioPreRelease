@@ -216,7 +216,7 @@ namespace Galio_UI.DataGestor
             {
                 logic logic = new logic();
                 if (!cmbJustify.SelectedItem.Equals("Seleccione"))
-                    Asistencia.Estado = cmbJustify.SelectedItem.ToString();
+                    Asistencia.Estado = cmbJustify.SelectedItem.ToString()+" ("+txtJustify.Text.Trim()+")";
                 else
                     Asistencia.Estado = txtJustify.Text.Trim();
                 Asistencia.Descripcion = "Ausencia Justificada";
@@ -250,6 +250,26 @@ namespace Galio_UI.DataGestor
                 txtJustify.Enabled = false;
                 txtJustify.Text = "";
             }
+        }
+
+        private void rbAttendence_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbAttendence.Checked == true)
+            {
+                gbJustify.Enabled = true;
+                gbModAttendence.Enabled = false;
+            }
+            else
+            {
+                gbJustify.Enabled = false;
+                gbModAttendence.Enabled = true;
+            }
+            
+        }
+
+        private void rbCambiar_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

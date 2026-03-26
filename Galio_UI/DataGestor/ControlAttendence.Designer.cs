@@ -185,6 +185,7 @@ namespace Galio_UI.DataGestor
             this.rbCambiar.TabStop = true;
             this.rbCambiar.Text = "Cambiar Asistencia";
             this.rbCambiar.UseVisualStyleBackColor = true;
+            this.rbCambiar.CheckedChanged += new System.EventHandler(this.rbCambiar_CheckedChanged);
             // 
             // rbAttendence
             // 
@@ -196,6 +197,7 @@ namespace Galio_UI.DataGestor
             this.rbAttendence.TabStop = true;
             this.rbAttendence.Text = "Justificar Ausencia";
             this.rbAttendence.UseVisualStyleBackColor = true;
+            this.rbAttendence.CheckedChanged += new System.EventHandler(this.rbAttendence_CheckedChanged);
             // 
             // dtpAtte
             // 
