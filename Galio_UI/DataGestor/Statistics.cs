@@ -39,9 +39,9 @@ namespace Galio_UI.DataGestor
             Lst = logic.ListGroup(cmbGrupo.SelectedItem.ToString());
             dgvList.DataSource = Lst;
             dgvList.Refresh();
-            dgvList.Columns["Grade"].Visible = false;
+            dgvList.Columns["Grupo"].Visible = false;
             //AutoSize For Name Column Adjust to size Name
-            dgvList.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvList.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             foreach (DataGridViewColumn item in dgvList.Columns)
             {
                 item.ReadOnly = true;

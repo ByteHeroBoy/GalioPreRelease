@@ -1,5 +1,6 @@
 ﻿using BLL;
 using ETL.DataGen;
+using Galio_UI.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -193,16 +194,23 @@ namespace Galio_UI.DataGestor
         {
             if (!cmbAttendence.SelectedItem.ToString().Equals("Seleccione"))
             {
-                Asistencia.Estado = cmbAttendence.SelectedItem.ToString();
-                logic logic = new logic();
-                DialogResult result  = MessageBox.Show("Desea Modificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                // Ask for a reason before proceding
+                using (var reasonDialog = new ChangeReasonDialog())
                 {
-                    if (logic.JustifyAsist(Asistencia))
+                    if (reasonDialog.ShowDialog(this) != DialogResult.OK)
+                        return;
+                    var temp = "Asistencia Modificada a " + cmbAttendence.SelectedItem.ToString() + " de " + Asistencia.Estado;
+                    Asistencia.Estado = temp;
+                    logic logic = new logic();
+                    DialogResult result = MessageBox.Show("Desea Modificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
                     {
-                        dgvAttendence.DataSource = new List<Asistencia>();
-                        MessageBox.Show("Modificacion a asistencia realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        CleanGBModAtte();
+                        if (logic.JustifyAsist(Asistencia))
+                        {
+                            dgvAttendence.DataSource = new List<Asistencia>();
+                            MessageBox.Show("Modificacion a asistencia realizada.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            CleanGBModAtte();
+                        }
                     }
                 }
             }
