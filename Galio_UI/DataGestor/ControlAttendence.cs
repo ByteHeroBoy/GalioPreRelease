@@ -166,9 +166,9 @@ namespace Galio_UI.DataGestor
             {
                 ID_Asist= Convert.ToInt32(dgvAttendence.Rows[e.RowIndex].Cells[0].Value.ToString()),
                 Cedula= dgvAttendence.Rows[e.RowIndex].Cells[1].Value.ToString(),
-                FechaHora = dgvAttendence.Rows[e.RowIndex].Cells[2].Value.ToString(),
+                FechaHora = dgvAttendence.Rows[e.RowIndex].Cells[4].Value.ToString(),
                 Estado = dgvAttendence.Rows[e.RowIndex].Cells[5].Value.ToString(),
-                Observaciones = dgvAttendence.Rows[e.RowIndex].Cells[4].Value.ToString()
+                Observaciones = dgvAttendence.Rows[e.RowIndex].Cells[6].Value.ToString()
             };
             if (rbAttendence.Checked == true)
             {
@@ -223,10 +223,11 @@ namespace Galio_UI.DataGestor
             if (!cmbJustify.SelectedItem.Equals("Seleccione") || !string.IsNullOrWhiteSpace(txtJustify.Text.Trim()))
             {
                 logic logic = new logic();
-                if (!cmbJustify.SelectedItem.Equals("Seleccione"))
-                    Asistencia.Estado = cmbJustify.SelectedItem.ToString()+" ("+txtJustify.Text.Trim()+")";
+                if (!cmbJustify.SelectedItem.Equals("Otro"))
+                    Asistencia.Estado = "Justificado por: "+cmbJustify.SelectedItem.ToString();
                 else
-                    Asistencia.Estado = txtJustify.Text.Trim();
+                    Asistencia.Estado = txtJustify.Text.Trim() + " (" + txtJustify.Text.Trim() + ")";
+                //------------------------------------------------//
                 Asistencia.Descripcion = "Ausencia Justificada";
                 DialogResult result = MessageBox.Show("Desea Justificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)

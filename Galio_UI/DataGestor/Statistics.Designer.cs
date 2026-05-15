@@ -114,6 +114,7 @@ namespace Galio_UI.DataGestor
             this.groupBox2.TabIndex = 25;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Estadisticas de asistencia";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // label6
             // 

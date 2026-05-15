@@ -46,7 +46,7 @@ namespace Galio_UI.DataGestor
             {
                 item.ReadOnly = true;
             }
-            //lblTeacher.Text = logic.CountTeacher(cmbGrupo.SelectedItem.ToString()).ToString();
+            lblTeacher.Text = logic.TotalAsistenciasPorGrupo(cmbGrupo.SelectedItem.ToString()).ToString();
         }
         private void Clean()
         {
@@ -191,7 +191,7 @@ namespace Galio_UI.DataGestor
         {
             string id = dgvList.Rows[e.RowIndex].Cells[0].Value.ToString();
             logic logic = new logic();
-            //data = logic.Statistics(id);
+            data = logic.Estadisticas(id);
             data.ID_Estudiante = id;
             data.PorcentajeAsistencias = (data.PorcentajeAsistencias / Convert.ToDouble(lblTeacher.Text)) * 100;
             lblPercent.Text = data.PorcentajeAsistencias + "%";
@@ -245,6 +245,11 @@ namespace Galio_UI.DataGestor
                     AddHeader = true;
                 }
             }
+        }
+        //delete
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

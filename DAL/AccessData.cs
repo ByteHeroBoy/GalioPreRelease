@@ -276,7 +276,7 @@ namespace DAL
                 cnt.Open();
                 string pa = "SELECT" +
                             "(SELECT COUNT(*) FROM Asistencia WHERE Cedula = @ID) AS count1," +
-                            "(SELECT COUNT(*) FROM Asistencia WHERE Cedula = @ID AND (Estado = 'Presente' OR Estado = 'Justificado') AS count2";
+                            "(SELECT COUNT(*) FROM Asistencia WHERE Cedula = @ID AND (Estado = 'Presente' OR Estado = 'Justificado')) AS count2";
                 using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
                 {
                     cmd.Parameters.AddWithValue("@ID", id);
@@ -304,6 +304,19 @@ namespace DAL
             }
             #endregion
         }
+        public int TotalAsistenciasPorGrupo(string id)
+        {
+            int total = 0;
+            using (SQLiteConnection cnt = CreateConnection())
+            {
+                cnt.Open();
+                string pa = "SELECT COUNT(*) FROM Asistencia WHERE Cedula = @ID";
+                using (SQLiteCommand cmd = new SQLiteCommand(pa, cnt))
+                { cmd.Parameters.AddWithValue("@ID", id);
+                    total = Convert.ToInt32(cmd.ExecuteScalar()); 
+                }
+                return total;
+            }
+        }
     }
 }
- 

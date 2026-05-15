@@ -71,6 +71,11 @@ namespace BLL
             data = dt.Estadisticas(id);
             return data;
         }
+        public int TotalAsistenciasPorGrupo(string id)
+        {
+            AccessData dt = new AccessData();
+            return dt.TotalAsistenciasPorGrupo(id);
+        }
         #endregion
         #region Secondary Logic
         //Send  support email

@@ -21,14 +21,14 @@ namespace ETL.DataGen
         public string Descripcion { get; set; }
         public Asistencia()
         {
-            ID_Asist = int.MinValue;
-            Cedula = string.Empty;
-            Materia = string.Empty;
-            Lecciones = int.MinValue;
-            FechaHora = string.Empty;
-            Estado = string.Empty;
-            Observaciones = string.Empty;
-            Descripcion = string.Empty;
+            ID_Asist = int.MinValue;//0
+            Cedula = string.Empty;//1
+            Materia = string.Empty;//2
+            Lecciones = int.MinValue;//3
+            FechaHora = string.Empty;//4
+            Estado = string.Empty;//5
+            Observaciones = string.Empty;//6
+            Descripcion = string.Empty;//7
         }
     }
 }
