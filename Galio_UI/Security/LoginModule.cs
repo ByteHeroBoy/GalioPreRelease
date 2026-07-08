@@ -64,5 +64,10 @@ namespace Galio_UI.Security
             else
                 MessageBox.Show("Error al enviar el Correo.\nContacte con Soporte.", "Error!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        private void LoginModule_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
