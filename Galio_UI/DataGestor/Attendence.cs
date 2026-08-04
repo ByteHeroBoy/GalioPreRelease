@@ -91,6 +91,7 @@ namespace Galio_UI.DataGestor
                 cmbLect.Items.Add(i);
             }
             cmbLect.SelectedIndex = 0;
+            cmbLect.DropDownStyle = ComboBoxStyle.DropDownList;
         }
         #endregion
 
@@ -121,12 +122,14 @@ namespace Galio_UI.DataGestor
                 string classt = "";
                 using (CustomMessageBox cmb1 = new CustomMessageBox())
                 {
-                    if (cmb1.ShowDialog() == DialogResult.OK)
-                    {
-                        classt = cmb1.SelectedOption;
-                    }
+                    DialogResult result = cmb1.ShowDialog();
+                    if (result != DialogResult.OK)
+                        return; // Si el usuario cierra el formulario sin seleccionar una opción, salir del método
+
+                    classt = cmb1.SelectedOption;
+                            
                 }
-                //guardar la lista de asistencia\
+                //guardar la lista de asistencia
                 foreach (DataGridViewRow fila in dgvList.Rows)
                 {
                     if (!fila.IsNewRow)

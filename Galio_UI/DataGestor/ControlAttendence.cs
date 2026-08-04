@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Galio_UI.DataGestor
 {
-    public partial class ControlAttendence : Form
+    public partial class ControlAttendence : Form                                                                                                                                                   
     {
         //Lista de estudiantes en memoria
         private List<Estudiante> Estudiantes { get; set; }
@@ -79,6 +79,7 @@ namespace Galio_UI.DataGestor
             lblStateMod.Text = string.Empty;
             cmbAttendence.SelectedItem = "Seleccione";
             gbModAttendence.Enabled = false;
+            rbCambiar.Checked = false;
         }
         private void CleanGbJustify()
         {
@@ -199,6 +200,7 @@ namespace Galio_UI.DataGestor
                 {
                     if (reasonDialog.ShowDialog(this) != DialogResult.OK)
                         return;
+                    string motivo = reasonDialog.Reason;
                     var temp = "Asistencia Modificada a " + cmbAttendence.SelectedItem.ToString() + " de " + Asistencia.Estado;
                     Asistencia.Estado = temp;
                     logic logic = new logic();
@@ -220,13 +222,35 @@ namespace Galio_UI.DataGestor
 
         private void btnJustify_Click(object sender, EventArgs e)
         {
-            if (!cmbJustify.SelectedItem.Equals("Seleccione") || !string.IsNullOrWhiteSpace(txtJustify.Text.Trim()))
+            if ()
+            {
+
+            }
+            if (cmbJustify.SelectedItem == null)
+            {
+                MessageBox.Show("Debe seleccionar una justificacion.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string opcion = cmbJustify.SelectedItem.ToString();
+            //Verificarque no se haya seleccionado "Seleccione" y que el textbox no este vacio
+            if(opcion == "Seleccione")
+            {
+                MessageBox.Show("Debe seleccionar una justificacion.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            //Si se selecciona "Otro", verificar que el textbox no este vacio
+            if(opcion == "Otro" && string.IsNullOrWhiteSpace(txtJustify.Text.Trim()))
+            {
+                MessageBox.Show("Debe escribir una justificacion.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }           
+            if (!cmbJustify.SelectedItem.Equals("Seleccione") && !string.IsNullOrWhiteSpace(txtJustify.Text.Trim()))
             {
                 logic logic = new logic();
                 if (!cmbJustify.SelectedItem.Equals("Otro"))
                     Asistencia.Estado = "Justificado por: "+cmbJustify.SelectedItem.ToString();
                 else
-                    Asistencia.Estado = txtJustify.Text.Trim() + " (" + txtJustify.Text.Trim() + ")";
+                    Asistencia.Estado = "Ausencia por: " + " (" + txtJustify.Text.Trim() + ")";
                 //------------------------------------------------//
                 Asistencia.Descripcion = "Ausencia Justificada";
                 DialogResult result = MessageBox.Show("Desea Justificar esta Asistencia?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
